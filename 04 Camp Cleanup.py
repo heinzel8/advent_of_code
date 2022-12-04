@@ -15,9 +15,9 @@ def get_test_data():
 
 def solve_puzzle(lines):
     ranges = [list(map(int, re.findall(r"\d+", line))) for line in lines]
-    counter1 = sum([f1 <= f2 and t1 >= t2 or f2 <= f1 and t2 >= t1 for f1,t1,f2,t2 in ranges])
-    counter2 = sum([max(f1,f2) <= min(t1,t2) for f1,t1,f2,t2 in ranges])
-    return counter1, counter2
+    result1 = sum([f1 <= f2 and t1 >= t2 or f2 <= f1 and t2 >= t1 for f1,t1,f2,t2 in ranges])
+    result2 = sum([max(f1,f2) <= min(t1,t2) for f1,t1,f2,t2 in ranges])
+    return result1, result2
 
 def test_reference1():
     assert solve_puzzle(get_test_data())[0] == 2
