@@ -29,12 +29,6 @@ def test_solution():
     assert solve_puzzle(get_input_data())[0] == 471
     assert solve_puzzle(get_input_data())[1] == 888
 
-def test_ranges():
-    assert fully_overlap(["1", "4"], ["2", "3"]) == True
-    assert fully_overlap(["2", "3"], ["1", "4"]) == True
-    assert fully_overlap(["2", "5"], ["1", "4"]) == False
-    assert fully_overlap(["1", "4"], ["2", "5"]) == False
-
 if (__name__ == "__main__"):
     s1, s2 = solve_puzzle(get_input_data())
     print("solution1", s1)
