@@ -1,5 +1,8 @@
+import re
+from pathlib import Path
+
 def get_input_data():
-    with open(r"04 Camp Cleanup.txt", encoding="utf8") as f:
+    with open(Path(__file__).stem + ".txt", encoding="utf8") as f:
         return [line.strip() for line in f.readlines()]
 
 def get_test_data():
@@ -10,36 +13,10 @@ def get_test_data():
             "6-6,4-6",
             "2-6,4-8"]
 
-def fully_overlap(r1, r2):
-    r1 = [int(i) for i in r1]
-    r2 = [int(i) for i in r2]
-    if r1[0] >= r2[0] and r1[1] <= r2[1]:
-        return True
-    elif r1[0] <= r2[0] and r1[1] >= r2[1]:
-        return True
-    else:
-        return False
-
-def overlap(r1, r2):
-    r1 = [int(i) for i in r1]
-    r2 = [int(i) for i in r2]
-    for val in r1:
-        if r2[0] <= val <= r2[1]:
-            return True
-    for val in r2:
-        if r1[0] <= val <= r1[1]:
-            return True
-    return False
-
 def solve_puzzle(lines):
-    counter1 = 0
-    counter2 = 0
-    for line in lines:
-        ranges = [i for i in line.split(",")]
-        if fully_overlap(ranges[0].split("-"), ranges[1].split("-")):
-            counter1 += 1
-        if overlap(ranges[0].split("-"), ranges[1].split("-")):
-            counter2 += 1
+    ranges = [list(map(int, re.findall(r"\d+", line))) for line in lines]
+    counter1 = sum([f1 <= f2 and t1 >= t2 or f2 <= f1 and t2 >= t1 for f1,t1,f2,t2 in ranges])
+    counter2 = sum([max(f1,f2) <= min(t1,t2) for f1,t1,f2,t2 in ranges])
     return counter1, counter2
 
 def test_reference1():
