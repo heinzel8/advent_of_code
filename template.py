@@ -13,7 +13,7 @@ def solve_puzzle(lines):
 def test_reference():
     res1, res2 = solve_puzzle(get_test_data())
     #assert res1 == 0
-    #assert res1 == 0
+    #assert res2 == 0
 
 def test_solution():
     res1, res2 = solve_puzzle(get_test_data())
@@ -22,5 +22,5 @@ def test_solution():
 
 if (__name__ == "__main__"):
     s1, s2 = solve_puzzle(get_input_data())
-    print("solution1", s1)
-    print("solution2", s2)
+    print(f"solution1: {s1}")
+    print(f"solution2: {s2}")
