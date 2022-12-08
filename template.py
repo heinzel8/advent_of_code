@@ -16,7 +16,7 @@ def test_reference():
     #assert res2 == 0
 
 def test_solution():
-    res1, res2 = solve_puzzle(get_test_data())
+    res1, res2 = solve_puzzle(get_input_data())
     #assert res1 == 0
     #assert res2 == 0
 
