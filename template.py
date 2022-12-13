@@ -4,8 +4,8 @@ def get_puzzle_data():
     with open(Path(__file__).stem + ".txt", encoding="utf8") as f:
         return [line.strip() for line in f.readlines()]
 
-def get_reference_data(id=1):
-    with open(Path(__file__).stem + f"_reference{id}.txt", encoding="utf8") as f:
+def get_reference_data():
+    with open(Path(__file__).stem + f"_reference.txt", encoding="utf8") as f:
         return [line.strip() for line in f.readlines()]
 
 def test(puzzle, expected1, expected2, prefix = ""):
