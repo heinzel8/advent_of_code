@@ -35,24 +35,17 @@ def cmp(v1, v2):
         raise Exception("unhandled case")
 
 def get_val(v1):
+    if v1 == None:
+        return "x"
     if type(v1) == int:
-        return v1
+        return str(v1)
     if type(v1) == type_list:
-        m = min(len(v1), len(v2))
-        for i in range(m):
-            res = cmp(v1[i], v2[i])
-            if res != 0:
-                return res
-        if len(v1) < len(v2): return -1
-        elif len(v1) > len(v2): return 1
-        else: return 0
-    elif type(v1) == int and type(v2) == type_list:
-        return cmp([v1], v2)
-    elif type(v2) == int and type(v1) == type_list:
-        return cmp(v1, [v2])
-    else:
-        raise Exception("unhandled case")
-            
+        s = ""
+        if (len(v1) == 0):
+            s = " "
+        for i in v1:
+            s += get_val(i)
+        return s
 
 def solve_puzzle(puzzle):
     part1 = 0
@@ -62,15 +55,28 @@ def solve_puzzle(puzzle):
         res = cmp(v1, v2)
         if res == -1:
             part1 += (l+1)
-        print(l, res)
+        #print(l, res)
 
     packets = []
     for line in puzzle:
-        if line == "": continue
-        packets.append(eval(line))
-        packets = sorted(packets, key = lambda i: )
+        if line == "":
+            continue
+        packets.append(get_val(eval(line)))
+    packets.append("6000000")
+    packets.append("2000000")
+    packets = sorted(packets)
+    
+    with open("out.txt", mode="w") as f:
+        for p in packets:
+            f.write(p+"\n")
 
-    return part1, ""
+    part2 = 1
+    for n in range(len(packets)):
+        p = packets[n]
+        if p == "6000000" or p == "2000000":
+            part2 *= (n+1)
+
+    return part1, part2
 
 def test_reference():
     res1, res2 = solve_puzzle(get_reference_data())
