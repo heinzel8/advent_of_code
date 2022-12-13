@@ -34,22 +34,27 @@ def solve_puzzle(puzzle):
 
     return part1, part2
 
+def test(puzzle, expected1, expected2, prefix = ""):
+    s1, s2 = solve_puzzle(puzzle)
+    for i in [1, 2]:
+        s = str(eval(f"str(s{i})"))
+        exp = str(eval(f"expected{i}"))
+        app = "  PASS" if s == exp else "  FAIL - should be " + exp
+        print(prefix + f"solution {i}: " + s + " " + app)
+        
+    if (__name__ != "__main__"):
+        assert s1 == expected1
+        assert s2 == expected2
+
 def test_reference():
     puzzle = preprocess(get_reference_data())
-    s1, s2 = solve_puzzle(puzzle)
-    assert s1 == 13
-    assert s2 == 140
+    test(puzzle, expected1=13, expected2=1401)
 
 def test_solution():
     puzzle = preprocess(get_puzzle_data())
-    s1, s2 = solve_puzzle(puzzle)
-    assert s1 == 5843
-    assert s2 == 26289
+    test(puzzle, expected1=5843, expected2=26289)
 
 if (__name__ == "__main__"):
     test_reference()
+    print("="*28)
     test_solution()
-    puzzle = preprocess(get_puzzle_data())
-    s1, s2 = solve_puzzle(puzzle)
-    print(f"solution1: {s1}")
-    print(f"solution2: {s2}")
