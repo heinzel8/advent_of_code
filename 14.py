@@ -23,17 +23,61 @@ def test(puzzle, expected1, expected2, prefix = ""):
 
 def test_reference():
     puzzle = preprocess(get_reference_data())
-    test(puzzle, expected1="", expected2="", prefix="reference")
-
+    test(puzzle, expected1=24, expected2="", prefix="reference")
+    
 def test_solution():
     puzzle = preprocess(get_puzzle_data())
-    test(puzzle, expected1="", expected2="")
+    test(puzzle, expected1=795, expected2="")
 
 def preprocess(puzzle):
-    return [eval(line) for line in puzzle if line != ""]
+    lines = []
+    for line in puzzle:
+        splits = line.split(" -> ")
+        points = []
+        for s in splits:
+            x, y = s.split(",")
+            points.append((int(x), int(y)))
+        for i,(f,t) in enumerate(zip(points[0::1], points[1::1])):
+            lines.append((f, t))
+    return lines
+
+def is_pos_free(pos, rocks):
+    return pos not in rocks
+
+def drop(sand, rocks):
+    x,y = sand
+    while y < 200:
+        y += 1
+        if is_pos_free((x, y), rocks):
+            return drop((x, y), rocks)
+        elif is_pos_free((x-1, y), rocks):
+            return drop((x-1, y), rocks)
+        elif is_pos_free((x+1, y), rocks):
+            return drop((x+1, y), rocks)
+        else:
+            rocks.append((x, y-1))
+            return True
+    return False
 
 def solve_puzzle(puzzle):
-    return "", ""
+    print(puzzle)
+    rocks = []
+    for f, t in puzzle:
+        minx = min(f[0], t[0])
+        maxx = max(f[0], t[0])
+        miny = min(f[1], t[1])
+        maxy = max(f[1], t[1])
+        dx = max(f[0], t[0]) - min(f[0], t[0])
+        for x in range(minx, maxx+1):
+            for y in range(miny, maxy+1):
+                rocks.append((x,y))
+
+    s1 = 0
+    while drop(sand=(500,0), rocks=rocks):
+        s1 += 1
+
+    #for r in rocks: print(r)
+    return s1, ""
 
 if (__name__ == "__main__"):
     test_reference()
