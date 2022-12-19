@@ -33,21 +33,23 @@ def solve_puzzle(puzzle):
     res1 = sum([cycles[i-1]*i for i in [20, 60, 100, 140, 180, 220]])
     screen_width = len(cycles) // SCREEN_HEIGHT
 
-    pixels = []
+    pixels = ""
     for pixel_id in range(len(cycles)):
         sprite_pos = cycles[pixel_id]
         row = pixel_id % screen_width
         if row >= (sprite_pos-1) and row <= (sprite_pos+1):
-            pixels.append("#")
+            pixels += "#"
         else:
-            pixels.append(".")
+            pixels += "."
+        if (len(pixels)-6) % screen_width == 0:
+            pixels += "\n"
     
     screen = []
     for line in range(SCREEN_HEIGHT):
         f = line * screen_width
         t = f + screen_width
         screen.append("".join(pixels[f:t]))
-    return res1, screen
+    return res1, pixels
 
 def test_reference():
     res1, res2 = solve_puzzle(get_reference_puzzle_data())
@@ -63,5 +65,4 @@ if (__name__ == "__main__"):
     res1, res2 = solve_puzzle(get_puzzle_data())
     print(f"solution1: {res1}")
     print(f"solution2:")
-    for line in res2:
-        print(line)
+    print(res2)
