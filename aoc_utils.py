@@ -4,13 +4,13 @@ def get_puzzle_data(file):
     stem = Path(file).stem
     if stem == "template": return ""
     with open(stem + ".txt", encoding="utf8") as f:
-        return [line.strip() for line in f.readlines()]
+        return [line.strip("\r\n") for line in f.readlines()]
 
 def get_reference_data(file):
     stem = Path(file).stem
     if stem == "template": return ""
     with open(stem + f"_reference.txt", encoding="utf8") as f:
-        return [line.strip() for line in f.readlines()]
+        return [line.strip("\r\n") for line in f.readlines()]
 
 def print_statistics(description, value, expected):
     print("="*48)
