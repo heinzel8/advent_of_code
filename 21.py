@@ -47,6 +47,32 @@ def solve_puzzle(_monkeys:list[Monkey]):
                     has_unresolved = True
     s1 = [m for m in monkeys if m.name == "monkey_root"][0].number
 
+    # symbols = []
+    # equations = []
+    # monkeys = deepcopy(_monkeys)
+    # human:Monkey = [m for m in monkeys if m.name == "monkey_humn"][0]
+    # human.number = None
+    # human.expression = "x"
+    # x = S("x")
+    # for i,m in enumerate(monkeys):
+    #     if m.name == "monkey_root":
+    #         l = m.source1
+    #         r = m.source2
+    #     elif m.number is not None:
+    #         l = m.name
+    #         r = m.number
+    #     else:
+    #         l = m.name
+    #         r = m.expression
+    #     equations.append(Eq(S(l), S(r)))
+    #     print(f"{i:4} {l} = {r}")
+    #     if 0 == i % 100:
+    #         pass
+    #         # result = solve(equations)
+    # result = solve(equations)
+    # s2 = result[0]
+    # print(s2["x"])
+    # print(type(s2))
     s2 = None
 
     return s1, s2
