@@ -25,7 +25,10 @@ def preprocess(puzzle):
     path.append(int(ll[i_last:len(ll)]))
     return [walls, open_tiles, path]
 
-def find_opposite_edge(cur_pos_vec, dir):
+def find_opposite_edge_part2(cur_pos_vec, dir):
+    return find_opposite_edge_part1(cur_pos_vec, dir)
+
+def find_opposite_edge_part1(cur_pos_vec, dir):
     search_dir = vec(-dir.x, -dir.y)
     while True:
         next_pos_vec = cur_pos_vec + search_dir
@@ -34,6 +37,12 @@ def find_opposite_edge(cur_pos_vec, dir):
             break
         cur_pos_vec = next_pos_vec
     return (cur_pos_vec.x, cur_pos_vec.y)
+
+def find_opposite_edge(cur_pos_vec, dir):
+    if PART_2:
+        return find_opposite_edge_part2(cur_pos_vec, dir)
+    else:
+        return find_opposite_edge_part1(cur_pos_vec, dir)
 
 def move(pos, count, dir):
     pos = vec(pos)
@@ -97,9 +106,8 @@ def draw(curr_pos, dir):
         f.writelines(lines)
         f.flush()
 
-def solve_puzzle(puzzle_data):
+def solve(puzzle_data):
     init(puzzle_data)
-
     hist = ""
     dir = vec(1,0)
     pos = start_pos
@@ -114,16 +122,22 @@ def solve_puzzle(puzzle_data):
     pos = move(pos, m, dir)
     hist += str(m)
     #print("final pos:", pos[0], pos[1])
-
-    s1 = int(sum([1000*(pos[1]+1), 4*(pos[0]+1), all_dirs.index(dir)]))
     #print(hist)
 
-    return s1, None
+    return int(sum([1000*(pos[1]+1), 4*(pos[0]+1), all_dirs.index(dir)]))
+
+def solve_puzzle(puzzle_data):
+    global PART_2
+    PART_2 = False
+    s1 = solve(puzzle_data)
+    PART_2 = True
+    s2 = solve(puzzle_data)
+    return s1, s2
 
 if (__name__ == "__main__"):
     ref = solve_puzzle(preprocess(get_reference_data(__file__)))
     print_statistics("Reference", ref, expected=(6032, None))
     
-    # quit()
+    quit()
     sol = solve_puzzle(preprocess(get_puzzle_data(__file__)))
     print_statistics("Solution", sol, expected=(106094, None))
