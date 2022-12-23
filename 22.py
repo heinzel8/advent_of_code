@@ -103,10 +103,7 @@ def solve_puzzle(puzzle_data):
     hist = ""
     dir = vec(1,0)
     pos = start_pos
-    p1 = [x for x in islice(path,0,len(path),2)]
-    p2 = [x for x in islice(path,1,len(path),2)]
-
-    for m,d in zip(p1, p2):
+    for m,d in zip(islice(path,0,len(path),2), islice(path,1,len(path),2)):
         #print(m, d)
         pos = move(pos, m, dir)
         dir = rotate(dir, d)
