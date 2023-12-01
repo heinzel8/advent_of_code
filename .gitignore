@@ -3,3 +3,6 @@
 .vscode
 /*.txt
 .venv/
+*pycache*/
+
+*_data.txt

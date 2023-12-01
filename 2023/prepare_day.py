@@ -11,13 +11,11 @@ YEAR = 2023
 DAY = sys.argv[1]
 SCRIPT_TEMPLATE_FILE = "template.py"
 SCRIPT_FILE = f"{DAY}.py"
-DATA_FILE = f"{DAY}.txt"
-REFERENCE_DATA_FILE = f"{DAY}_reference.txt"
+DATA_FILE = f"{DAY}_data.txt"
+REFERENCE_DATA_FILE = f"{DAY}_reference_data.txt"
 
 if not os.path.exists(SCRIPT_TEMPLATE_FILE):
     raise FileNotFoundError(f"{SCRIPT_TEMPLATE_FILE} not found")
-
-os.makedirs(BASE_PATH, exist_ok=True)
 
 if not os.path.exists(SCRIPT_FILE):
     sh.copy(SCRIPT_TEMPLATE_FILE, SCRIPT_FILE)
