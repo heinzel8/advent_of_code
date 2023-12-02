@@ -12,7 +12,8 @@ DAY = sys.argv[1]
 SCRIPT_TEMPLATE_FILE = "template.py"
 SCRIPT_FILE = f"{DAY}.py"
 DATA_FILE = f"{DAY}_data.txt"
-REFERENCE_DATA_FILE = f"{DAY}_reference_data.txt"
+REFERENCE_DATA_FILE1 = f"{DAY}_reference_data_part1.txt"
+REFERENCE_DATA_FILE2 = f"{DAY}_reference_data_part2.txt"
 
 if not os.path.exists(SCRIPT_TEMPLATE_FILE):
     raise FileNotFoundError(f"{SCRIPT_TEMPLATE_FILE} not found")
@@ -26,6 +27,7 @@ else:
 with open(DATA_FILE, 'w', encoding="utf8") as f:
     f.write(get_data(day=int(DAY), year=YEAR))
 print(f"created {DATA_FILE}")
-with open(REFERENCE_DATA_FILE, 'w', encoding="utf8") as f:
-    pass
-print(f"created {REFERENCE_DATA_FILE}")
+with open(REFERENCE_DATA_FILE1, 'w', encoding="utf8") as f: pass
+print(f"created {REFERENCE_DATA_FILE1}")
+with open(REFERENCE_DATA_FILE2, 'w', encoding="utf8") as f: pass
+print(f"created {REFERENCE_DATA_FILE2}")
