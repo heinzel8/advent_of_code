@@ -14,7 +14,12 @@ def get_reference_data(file, part):
     if stem == "template": return ""
     filename = f"{stem.split('_')[0]}_reference_data_part{part}.txt"
     with open(path / filename, encoding="utf8") as f:
-        return [line.strip("\r\n") for line in f.readlines()]
+        puzzle = [line.strip("\r\n") for line in f.readlines()]
+        if (0 == len(puzzle)):
+            print(f"ERROR: Reference data file part {part} is empty")
+            quit()
+
+        return puzzle
 
 def print_statistics(description, value, expected):
     print("="*48)
