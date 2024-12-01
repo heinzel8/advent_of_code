@@ -49,6 +49,7 @@ def preprocess(puzzle):
     return hands
 
 def cmp(v1, v2):
+    '''spaceship operator'''
     if (diff := v1 - v2) == 0:
         return 0
     return math.copysign(1, diff)
