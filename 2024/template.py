@@ -5,9 +5,9 @@ def preprocess(puzzle):
 
 def solve_puzzle(puzzle, solve_part1=True, solve_part2=True):
     puzzle = preprocess(puzzle)
-    results = [None, None]
+    r1, r2 = None, None
 
-    return results
+    return r1, r2
 
 def run_tests():
     assert(1 == 1)
@@ -21,5 +21,6 @@ if (__name__ == "__main__"):
     # ref2 = solve_puzzle(get_reference_data(__file__, part=2), solve_part1=False)[1]
     print_statistics("Reference", (ref1, ref2), expected=(None, None))
 
+    solution = None, None
     # solution = solve_puzzle(get_puzzle_data(__file__))
-    # print_statistics("Solution", solution, expected=(None, None))
+    print_statistics("Solution", solution, expected=(None, None))
