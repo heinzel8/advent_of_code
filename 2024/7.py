@@ -8,19 +8,22 @@ def preprocess(puzzle):
         values.append(list(map(int, re.split("[: ]+", line))))
     return values
 
-def get_combinations(line, operators):
-    expressions = []
-    operators_count = len(line)-2
-    combinations = list(product(operators, repeat=operators_count))
+def has_solution(line, operators):
+    combinations = list(product(operators, repeat=len(line)-2))
     for operator in combinations:
-        ex = f"{line[1]}"
+        res = line[1]
         for i, val in enumerate(line[2:]):
-            if operator[i] == "||":
-               ex = f"{eval(ex)}{val}"
-            else:
-                ex = f"({ex}) {operator[i]} {val}"
-        expressions.append(ex)
-    return expressions
+            if operator[i] == "+":
+                res += int(val)
+            elif operator[i] == "*":
+                res *= int(val)
+            elif operator[i] == "||":
+               res = int(f"{res}{val}")
+            if res > line[0]:
+                break
+        if res == line[0]:
+            return True
+    return False
 
 def solve_puzzle(puzzle, solve_part1=True, solve_part2=True):
     puzzle = preprocess(puzzle)
@@ -29,25 +32,17 @@ def solve_puzzle(puzzle, solve_part1=True, solve_part2=True):
     if solve_part1:
         r1 = 0
         for line in puzzle:
-            expected = line[0]
-            expressions = get_combinations(line, operators=["+", "*"])
-            for expression in expressions:
-                if eval(expression) == expected:
-                    r1 += expected
-                    break
+            if has_solution(line, operators=["+", "*"]):
+                r1 += line[0]
+
     if solve_part2:
         r2 = 0
         for i, line in enumerate(puzzle, 1):
             expected = line[0]
-            expressions = get_combinations(line, operators=["+", "*", "||"])
-            if expected == 7290:
-                pass
-            for expression in expressions:
-                if eval(expression) == expected:
-                    print(f"{expected} = {expression}")
-                    r2 += expected
-                    break
-            print(f"{round(i/len(puzzle)*100, 1)}%")
+            if has_solution(line, operators=["+", "*", "||"]):
+                r2 += expected
+            progress = round(i/len(puzzle)*100, 1)
+            print(f"  Progress: {progress}%   ", end="\r")
 
     return r1, r2
 
@@ -65,4 +60,4 @@ if (__name__ == "__main__"):
 
     solution = None, None
     solution = solve_puzzle(get_puzzle_data(__file__))
-    print_statistics("Solution", solution, expected=(None, None))
+    print_statistics("Solution", solution, expected=(303876485655, 146111650210682))
