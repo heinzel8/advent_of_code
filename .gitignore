@@ -1,8 +1,7 @@
-/__pycache__
-/.pytest_cache
-.vscode
-/*.txt
-.venv/
 *pycache*/
+.pytest_cache
+.vscode
+.venv/
 
+# don't commit the personalized puzzle input
 *_data.txt

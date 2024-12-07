@@ -1,4 +1,5 @@
 from pathlib import Path
+from termcolor import colored, cprint
 
 def get_puzzle_data(file):
     stem = Path(file).stem
@@ -16,7 +17,7 @@ def get_reference_data(file, part):
     with open(path / filename, encoding="utf8") as f:
         puzzle = [line.strip("\r\n") for line in f.readlines()]
         if (0 == len(puzzle)):
-            print(f"ERROR: Reference data file part {part} is empty")
+            cprint(f"ERROR: Reference data file part {part} is empty", color="red")
             quit()
 
         return puzzle
@@ -26,5 +27,8 @@ def print_statistics(description, value, expected):
     for n in range(2):
         result = ""
         if expected[n] is not None:
-            result = f"(PASS)" if value[n] == expected[n] else f"(FAIL) expected {expected[n]}"
+            if value[n] == expected[n]:
+                result = colored("(PASS)", "green")
+            else:
+                result = result = colored("(FAIL)", "red") + f" expected {expected[n]}"
         print(f"{description} {n+1}: ", value[n], result)
