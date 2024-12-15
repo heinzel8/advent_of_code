@@ -2,6 +2,12 @@ from aoc_utils import get_puzzle_data, get_reference_data, print_statistics
 from dataclasses import dataclass
 from vector import Vector
 
+@dataclass
+class Globals:
+    stretched_map:bool = False
+
+globals = Globals()
+
 LEFT = Vector(x=-1, y=0)
 RIGHT = Vector(x=1, y=0)
 UP = Vector(x=0, y=-1)
@@ -46,7 +52,7 @@ class Map:
     def move_good2(self, f_x:int, f_y:int, dir:Vector):
         return self.move_good(Vector(x=f_x, y=f_y), dir)
     
-    def move_good(self, pos: Vector, dir: Vector):
+    def can_move_good(self, pos: Vector, dir: Vector):
         if not self.is_good(pos):
             assert False, f"No commodity at pos {pos.x},{pos.y}"
         
@@ -54,11 +60,20 @@ class Map:
         if self.is_obstacle(to):
             return False
         elif self.is_good(to):
-            if not self.move_good(to, dir):
+            if not self.can_move_good(to, dir):
                 return False
         
-        self.goods.remove(pos)
-        self.goods.append(to)
+        return True
+    
+    def move_good(self, pos: Vector, dir: Vector):
+        if not (self.can_move_good(pos, dir)):
+            return False
+        
+        to = pos + dir
+        if self.is_good(to):
+            self.move_good(to, dir)
+        
+        self.goods[self.goods.index(pos)] = to
         return True
     
     def to_str(self, robot) -> str:
@@ -84,6 +99,8 @@ def preprocess(puzzle):
         if line == "":
             break
         for x,c in enumerate(line):
+            if globals.stretched_map:
+                x *= 2
             if c == "#":
                 map.add_obstacle(x,y)
             elif c == "O":
@@ -121,11 +138,12 @@ def solve_puzzle(puzzle, solve_part1=True, solve_part2=True):
     map, movements, robot = preprocess(puzzle)
     r1, r2 = None, None
 
-    for i,m in enumerate(movements):
+    for i,m in enumerate(movements, 1):
         robot = move(robot, m, map)
         progress = round(i/len(movements)*100,1)
         if i%10 == 0:
             print(f"  Progress: {progress}%   ", end="\r")
+    print()
     write_map(map, robot, m)
 
     r1 = 0
@@ -157,11 +175,19 @@ def run_tests():
 if (__name__ == "__main__"):
     run_tests()
 
+    globals = Globals(stretched_map=False)
+
     ref1 = ref2 = None
     ref1 = solve_puzzle(get_reference_data(__file__, part=1), solve_part2=False)[0]
-    # ref2 = solve_puzzle(get_reference_data(__file__, part=2), solve_part1=False)[1]
+    
+    globals = Globals(stretched_map=True)
+
+    ref2 = solve_puzzle(get_reference_data(__file__, part=2), solve_part1=False)[1]
     print_statistics("Reference", (ref1, ref2), expected=(10092, None))
 
-    solution = None, None
-    solution = solve_puzzle(get_puzzle_data(__file__))
-    print_statistics("Solution", solution, expected=(1465152, None))
+    globals = Globals(stretched_map=False)
+
+    sol1, sol2 = None, None
+    # sol1 = solve_puzzle(get_puzzle_data(__file__), solve_part2=False)[0]
+    # sol2 = solve_puzzle(get_puzzle_data(__file__), solve_part1=False)[1]
+    print_statistics("Solution", (sol1, sol2), expected=(1465152, None))
